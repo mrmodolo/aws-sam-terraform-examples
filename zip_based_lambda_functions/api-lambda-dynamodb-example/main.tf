@@ -17,14 +17,14 @@ terraform {
 }
 
 provider "aws" {
-    region = "<AWS region>" # eg. us-east-1
+    region = "us-east-1" # eg. us-east-1
 }
 
 
 resource "aws_lambda_function" "publish_book_review" {
     filename = "${local.building_path}/${local.lambda_code_filename}"
     handler = "index.lambda_handler"
-    runtime = "python3.8"
+    runtime = "python3.10"
     function_name = "publish-book-review"
     role = aws_iam_role.iam_for_lambda.arn
     timeout = 30
