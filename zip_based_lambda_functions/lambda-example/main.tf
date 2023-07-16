@@ -24,7 +24,7 @@ terraform {
 resource "aws_lambda_function" "hello-terraform" {
     filename = "${local.building_path}/${local.lambda_code_filename}"
     handler = "index.lambda_handler"
-    runtime = "python3.8"
+    runtime = "python3.10"
     function_name = "hello-terraform"
     role = aws_iam_role.iam_for_lambda.arn
     timeout = 30
