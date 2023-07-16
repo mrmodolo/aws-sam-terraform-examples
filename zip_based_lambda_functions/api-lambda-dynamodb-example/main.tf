@@ -17,48 +17,48 @@ terraform {
 }
 
 provider "aws" {
-    region = "us-east-1" # eg. us-east-1
+  region = "us-east-1" # eg. us-east-1
 }
 
 
 resource "aws_lambda_function" "publish_book_review" {
-    filename = "${local.building_path}/${local.lambda_code_filename}"
-    handler = "index.lambda_handler"
-    runtime = "python3.10"
-    function_name = "publish-book-review"
-    role = aws_iam_role.iam_for_lambda.arn
-    timeout = 30
-    depends_on = [
-        null_resource.build_lambda_function
-    ]
+  filename      = "${local.building_path}/${local.lambda_code_filename}"
+  handler       = "index.lambda_handler"
+  runtime       = "python3.10"
+  function_name = "publish-book-review"
+  role          = aws_iam_role.iam_for_lambda.arn
+  timeout       = 30
+  depends_on = [
+    null_resource.build_lambda_function
+  ]
 
-    environment {
-        variables = {
-            DYNAMODB_TABLE_NAME = "${aws_dynamodb_table.book-reviews-ddb-table.id}"
-        }
+  environment {
+    variables = {
+      DYNAMODB_TABLE_NAME = "${aws_dynamodb_table.book-reviews-ddb-table.id}"
+    }
   }
 }
 
 resource "null_resource" "sam_metadata_aws_lambda_function_publish_book_review" {
-    triggers = {
-        resource_name = "aws_lambda_function.publish_book_review"
-        resource_type = "ZIP_LAMBDA_FUNCTION"
-        original_source_code = "${local.lambda_src_path}"
-        built_output_path = "${local.building_path}/${local.lambda_code_filename}"
-    }
-    depends_on = [
-        null_resource.build_lambda_function
-    ]
+  triggers = {
+    resource_name        = "aws_lambda_function.publish_book_review"
+    resource_type        = "ZIP_LAMBDA_FUNCTION"
+    original_source_code = "${local.lambda_src_path}"
+    built_output_path    = "${local.building_path}/${local.lambda_code_filename}"
+  }
+  depends_on = [
+    null_resource.build_lambda_function
+  ]
 }
 
 resource "null_resource" "build_lambda_function" {
-    triggers = {
-        build_number = "${timestamp()}" # TODO: calculate hash of lambda function. Mo will have a look at this part
-    }
+  triggers = {
+    build_number = "${timestamp()}" # TODO: calculate hash of lambda function. Mo will have a look at this part
+  }
 
-    provisioner "local-exec" {
-        command =  substr(pathexpand("~"), 0, 1) == "/"? "./py_build.sh \"${local.lambda_src_path}\" \"${local.building_path}\" \"${local.lambda_code_filename}\" Function" : "powershell.exe -File .\\PyBuild.ps1 ${local.lambda_src_path} ${local.building_path} ${local.lambda_code_filename} Function"
-    }
+  provisioner "local-exec" {
+    command = substr(pathexpand("~"), 0, 1) == "/" ? "./py_build.sh \"${local.lambda_src_path}\" \"${local.building_path}\" \"${local.lambda_code_filename}\" Function" : "powershell.exe -File .\\PyBuild.ps1 ${local.lambda_src_path} ${local.building_path} ${local.lambda_code_filename} Function"
+  }
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
@@ -84,38 +84,38 @@ resource "aws_iam_role" "iam_for_lambda" {
     name = "dynamodb_access"
 
     policy = jsonencode({
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-            "Action": [
-                "dynamodb:List*",
-                "dynamodb:DescribeReservedCapacity*",
-                "dynamodb:DescribeLimits",
-                "dynamodb:DescribeTimeToLive"
-            ],
-            "Resource": "*",
-            "Effect": "Allow"
-            },
-            {
-            "Action": [
-                "dynamodb:BatchGet*",
-                "dynamodb:DescribeStream",
-                "dynamodb:DescribeTable",
-                "dynamodb:Get*",
-                "dynamodb:Query",
-                "dynamodb:Scan",
-                "dynamodb:BatchWrite*",
-                "dynamodb:CreateTable",
-                "dynamodb:Delete*",
-                "dynamodb:Update*",
-                "dynamodb:PutItem"
-            ],
-            "Resource": [
-                "${aws_dynamodb_table.book-reviews-ddb-table.arn}"
-            ],
-            "Effect": "Allow"
-            }
-        ]
+      "Version" : "2012-10-17",
+      "Statement" : [
+        {
+          "Action" : [
+            "dynamodb:List*",
+            "dynamodb:DescribeReservedCapacity*",
+            "dynamodb:DescribeLimits",
+            "dynamodb:DescribeTimeToLive"
+          ],
+          "Resource" : "*",
+          "Effect" : "Allow"
+        },
+        {
+          "Action" : [
+            "dynamodb:BatchGet*",
+            "dynamodb:DescribeStream",
+            "dynamodb:DescribeTable",
+            "dynamodb:Get*",
+            "dynamodb:Query",
+            "dynamodb:Scan",
+            "dynamodb:BatchWrite*",
+            "dynamodb:CreateTable",
+            "dynamodb:Delete*",
+            "dynamodb:Update*",
+            "dynamodb:PutItem"
+          ],
+          "Resource" : [
+            "${aws_dynamodb_table.book-reviews-ddb-table.arn}"
+          ],
+          "Effect" : "Allow"
+        }
+      ]
     })
   }
 
@@ -155,7 +155,7 @@ resource "aws_dynamodb_table" "book-reviews-ddb-table" {
   }
 
   tags = {
-    Name        = "book-reviews-table"
+    Name = "book-reviews-table"
   }
 }
 
