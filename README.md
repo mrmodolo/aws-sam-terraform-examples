@@ -30,3 +30,9 @@ The solution was to run the command `sam local invoke` with `--skip-pull-image`
 sam local invoke --skip-pull-image aws_lambda_function.publish_book_review -e events/new-review.json --beta-features 
 ```
 
+# AWS Lambda Terraform module
+
+[AWS Lambda Terraform module](https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest)
+
+Terraform module, which takes care of a lot of AWS Lambda/serverless tasks (build dependencies, packages, updates, deployments) in countless combinations
+
