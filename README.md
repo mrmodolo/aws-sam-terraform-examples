@@ -5,6 +5,7 @@ Full instructions on how to use this repository are contained in blog post [Bett
 
 ## Install AWS SAM CLI
 
+```bash
 cd ~/Downloads
 wget https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
 unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
@@ -13,4 +14,19 @@ rm aws-sam-cli-linux-x86_64.zip*
 rm -rf sam-installation
 sam --version
 SAM CLI, version 1.90.0
+```
+
+## Error: a bytes-like object is required, not 'str'
+
+After running the example successfully the first time, I started getting the error after further attempts.
+Searching on google I found:
+
+- [Bug: sam local invoke - Error: a bytes-like object is required, not 'str' on decompress #5434](https://github.com/aws/aws-sam-cli/issues/5434)
+- [SAM INVOKE FAILS #5421](https://github.com/aws/aws-sam-cli/issues/5421)
+
+The solution was to run the command `sam local invoke` with `--skip-pull-image` 
+
+```bash
+sam local invoke --skip-pull-image aws_lambda_function.publish_book_review -e events/new-review.json --beta-features 
+```
 
