@@ -35,15 +35,22 @@ sam local invoke --skip-pull-image aws_lambda_function.publish_book_review -e ev
 [AWS SAM and Podman](https://www.reddit.com/r/podman/comments/r6ybkw/aws_sam_and_podman/)
 
 > systemctl --user enable --now podman.socket
+>
 > systemctl --user start podman.socket
+>
 > systemctl --user status podman.socket
 > 
 > podman create --name="docker-cli" docker:dind
+>
 > podman cp docker-cli:/usr/local/bin/docker ./docker
+>
 > podman rm docker-cli
 > 
+>
 > unalias docker
+>
 > export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+>
 > ./docker --version
 
 
