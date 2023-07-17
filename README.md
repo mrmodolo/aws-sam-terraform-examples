@@ -30,7 +30,41 @@ The solution was to run the command `sam local invoke` with `--skip-pull-image`
 sam local invoke --skip-pull-image aws_lambda_function.publish_book_review -e events/new-review.json --beta-features 
 ```
 
-# AWS Lambda Terraform module
+## Podman [TODO]
+
+[AWS SAM and Podman](https://www.reddit.com/r/podman/comments/r6ybkw/aws_sam_and_podman/)
+
+> systemctl --user enable --now podman.socket
+> systemctl --user start podman.socket
+> systemctl --user status podman.socket
+> 
+> podman create --name="docker-cli" docker:dind
+> podman cp docker-cli:/usr/local/bin/docker ./docker
+> podman rm docker-cli
+> 
+> unalias docker
+> export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+> ./docker --version
+
+
+```bash
+systemctl --user enable --now podman.socket
+systemctl --user start podman.socket
+systemctl --user status podman.socket
+
+podman create --name="docker-cli" docker:dind
+podman cp docker-cli:/usr/local/bin/docker ~/bin/docker
+podman rm docker-cli
+
+sudo touch /etc/containers/nodocker # supress messages
+
+export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
+
+docker --version
+```
+
+
+## AWS Lambda Terraform module
 
 [AWS Lambda Terraform module](https://registry.terraform.io/modules/terraform-aws-modules/lambda/aws/latest)
 
