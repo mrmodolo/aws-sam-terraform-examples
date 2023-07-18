@@ -80,6 +80,7 @@ aws iam list-role-policies --role-name iam_for_lambda
 aws iam delete-role-policy --role-name iam_for_lambda --policy-name dynamodb_access
 aws iam delete-role --role-name iam_for_lambda
 
+aws lambda delete-function --function-name publish-book-review
 ```
 
 ## AWS Lambda Terraform module
