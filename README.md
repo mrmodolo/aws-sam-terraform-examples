@@ -70,11 +70,16 @@ export DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock
 docker --version
 ```
 
-# Remove DynamoDB and Log group
+# Remove Resources
 
 ```
 aws dynamodb delete-table --table-name BookReviews
 aws logs delete-log-group --log-group-name /aws/api_gw/book_reviews_service
+
+aws iam list-role-policies --role-name iam_for_lambda
+aws iam delete-role-policy --role-name iam_for_lambda --policy-name dynamodb_access
+aws iam delete-role --role-name iam_for_lambda
+
 ```
 
 ## AWS Lambda Terraform module
